@@ -12,6 +12,8 @@ namespace RCKTD
         private const float gravity = 0.1f;
         private const float thrust = 0.2f;
         private const float rotation = 0.01f;
+        private const float groundResistance = 0.5f;
+        private const float airResistance = 0.995f;
 
         private const float allowedRotationCosine = 0.9f;
         private const int allowedAmountOffSurface = 5;
@@ -102,6 +104,9 @@ namespace RCKTD
             }
 
             shipVel += shipAcc;
+
+            shipVel *= airResistance;
+
             shipPos += shipVel;
 
             foreach (var sur in surfaces)
@@ -118,7 +123,9 @@ namespace RCKTD
                     return;
                 }
 
-                shipVel = Vector2.Zero;
+                shipVel.Y = 0.0f;
+                shipVel.X *= groundResistance;
+
                 shipPos.Y = sur.Top - shipTexture.Height;
 
                 shipRot %= (float)(Math.PI * 2.0f);
