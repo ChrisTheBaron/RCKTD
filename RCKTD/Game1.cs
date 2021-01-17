@@ -10,6 +10,7 @@ namespace RCKTD
     {
 
         private const float gravity = 0.1f;
+        private const float thrust = 0.2f;
 
         private Vector2 shipPos;
         private Vector2 shipVel;
@@ -76,7 +77,14 @@ namespace RCKTD
                 return;
             }
 
-            shipVel.Y += gravity;
+            var shipAcc = new Vector2(0, gravity);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                shipAcc.Y -= thrust;
+            }
+
+            shipVel += shipAcc;
             shipPos += shipVel;
 
             foreach (var sur in surfaces)
