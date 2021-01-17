@@ -20,6 +20,8 @@ namespace RCKTD
 
         private Rectangle ScreenSize => _graphics.GraphicsDevice.Viewport.Bounds;
 
+        private Rectangle ShipBounds => new Rectangle(shipPos.ToPoint(), new Point(shipTexture.Width, shipTexture.Height));
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -62,8 +64,13 @@ namespace RCKTD
                 Exit();
             }
 
-            shipVel.Y += gravity;
+            if (!ScreenSize.Intersects(ShipBounds))
+            {
+                InitShip();
+                return;
+            }
 
+            shipVel.Y += gravity;
             shipPos += shipVel;
 
             base.Update(gameTime);
