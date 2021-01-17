@@ -6,6 +6,9 @@ namespace RCKTD
 {
     public class Game1 : Game
     {
+
+        private Texture2D shipTexture;
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -23,11 +26,13 @@ namespace RCKTD
             base.Initialize();
         }
 
+        // TODO: use this.Content to load your game content here
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            shipTexture = Content.Load<Texture2D>("ship");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -40,11 +45,16 @@ namespace RCKTD
             base.Update(gameTime);
         }
 
+        // TODO: Add your drawing code here
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+
+            _spriteBatch.Draw(shipTexture, Vector2.Zero, Color.White);
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
