@@ -103,19 +103,34 @@ namespace RCKTD
 
             foreach (var sur in surfaces)
             {
-                if (ShipBounds.Intersects(sur))
+                if (!ShipBounds.Intersects(sur))
+                    continue;
+
+                if (Math.Cos(shipRot) <= allowedRotationCosine)
                 {
-                    if (Math.Cos(shipRot) > allowedRotationCosine)
-                    {
-                        shipVel = Vector2.Zero;
-                        shipPos.Y = sur.Top - shipTexture.Height;
-                    }
-                    else
-                    {
-                        InitShip();
-                        return;
-                    }
+                    InitShip();
+                    return;
                 }
+
+                shipVel = Vector2.Zero;
+                shipPos.Y = sur.Top - shipTexture.Height;
+
+                shipRot %= (float)(Math.PI * 2.0f);
+                if (shipRot < 0)
+                {
+                    shipRot += (float)(Math.PI * 2.0f);
+                }
+                // 0 <= shipRot < 2PI
+
+                if (shipRot > Math.PI)
+                {
+                    shipRot = (float)Math.Min(Math.PI * 2.0f, shipRot + rotation);
+                }
+                else if (shipRot > 0)
+                {
+                    shipRot = Math.Max(0.0f, shipRot - rotation);
+                }
+
             }
 
             base.Update(gameTime);
