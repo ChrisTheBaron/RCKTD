@@ -7,11 +7,15 @@ namespace RCKTD
     public class Game1 : Game
     {
 
+        private Vector2 shipPos;
+
         private Texture2D shipTexture;
         private Texture2D wallTexture;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        private Rectangle ScreenSize => _graphics.GraphicsDevice.Viewport.Bounds;
 
         public Game1()
         {
@@ -24,7 +28,14 @@ namespace RCKTD
         {
             // TODO: Add your initialization logic here
 
+            InitShip();
+
             base.Initialize();
+        }
+
+        private void InitShip()
+        {
+            shipPos = new Vector2(ScreenSize.Width / 3, ScreenSize.Height / 2);
         }
 
         // TODO: use this.Content to load your game content here
@@ -56,9 +67,9 @@ namespace RCKTD
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(shipTexture, Vector2.Zero, Color.White);
+            _spriteBatch.Draw(shipTexture, shipPos, Color.White);
 
-            _spriteBatch.Draw(wallTexture, new Rectangle(0, _graphics.GraphicsDevice.Viewport.Height - 10, _graphics.GraphicsDevice.Viewport.Width, 10), Color.White);
+            _spriteBatch.Draw(wallTexture, new Rectangle(0, ScreenSize.Height - 10, ScreenSize.Width, 10), Color.White);
 
             _spriteBatch.End();
 
