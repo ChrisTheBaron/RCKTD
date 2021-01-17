@@ -13,6 +13,8 @@ namespace RCKTD
         private const float thrust = 0.2f;
         private const float rotation = 0.01f;
 
+        private const float allowedRotationCosine = 0.9f;
+
         private Vector2 shipPos;
         private Vector2 shipVel;
         private float shipRot;
@@ -103,8 +105,16 @@ namespace RCKTD
             {
                 if (ShipBounds.Intersects(sur))
                 {
-                    shipVel = Vector2.Zero;
-                    shipPos.Y = sur.Top - shipTexture.Height;
+                    if (Math.Cos(shipRot) > allowedRotationCosine)
+                    {
+                        shipVel = Vector2.Zero;
+                        shipPos.Y = sur.Top - shipTexture.Height;
+                    }
+                    else
+                    {
+                        InitShip();
+                        return;
+                    }
                 }
             }
 
