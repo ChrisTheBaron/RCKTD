@@ -7,7 +7,10 @@ namespace RCKTD
     public class Game1 : Game
     {
 
+        private const float gravity = 0.1f;
+
         private Vector2 shipPos;
+        private Vector2 shipVel;
 
         private Texture2D shipTexture;
         private Texture2D wallTexture;
@@ -36,6 +39,7 @@ namespace RCKTD
         private void InitShip()
         {
             shipPos = new Vector2(ScreenSize.Width / 3, ScreenSize.Height / 2);
+            shipVel = Vector2.Zero;
         }
 
         // TODO: use this.Content to load your game content here
@@ -50,12 +54,17 @@ namespace RCKTD
 
         }
 
+        // TODO: Add your update logic here
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
+            }
 
-            // TODO: Add your update logic here
+            shipVel.Y += gravity;
+
+            shipPos += shipVel;
 
             base.Update(gameTime);
         }
