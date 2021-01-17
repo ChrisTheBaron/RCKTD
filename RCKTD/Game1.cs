@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace RCKTD
@@ -23,7 +24,7 @@ namespace RCKTD
 
         private Rectangle ScreenSize => _graphics.GraphicsDevice.Viewport.Bounds;
 
-        private Rectangle ShipBounds => new Rectangle(shipPos.ToPoint(), new Point(shipTexture.Width, shipTexture.Height));
+        private Rectangle ShipBounds => new Rectangle((int)Math.Round(shipPos.X), (int)Math.Round(shipPos.Y), shipTexture.Width, shipTexture.Height);
 
         public Game1()
         {
@@ -78,7 +79,14 @@ namespace RCKTD
             shipVel.Y += gravity;
             shipPos += shipVel;
 
-
+            foreach (var sur in surfaces)
+            {
+                if (ShipBounds.Intersects(sur))
+                {
+                    shipVel = Vector2.Zero;
+                    shipPos.Y = sur.Top - shipTexture.Height;
+                }
+            }
 
             base.Update(gameTime);
         }
