@@ -14,6 +14,7 @@ namespace RCKTD
         private const float rotation = 0.01f;
 
         private const float allowedRotationCosine = 0.9f;
+        private const int allowedAmountOffSurface = 5;
 
         private Vector2 shipPos;
         private Vector2 shipVel;
@@ -43,6 +44,7 @@ namespace RCKTD
             // TODO: Add your initialization logic here
 
             surfaces.Add(new Rectangle(0, ScreenSize.Height - 10, ScreenSize.Width, 10));
+            surfaces.Add(new Rectangle(ScreenSize.Width / 2, ScreenSize.Height / 2 - 10, 100, 10));
 
             InitShip();
 
@@ -107,7 +109,10 @@ namespace RCKTD
                 if (!ShipBounds.Intersects(sur))
                     continue;
 
-                if (Math.Cos(shipRot) <= allowedRotationCosine)
+                if (ShipBounds.Center.Y > sur.Center.Y ||
+                    ShipBounds.Left < sur.Left - allowedAmountOffSurface ||
+                    ShipBounds.Right > sur.Right + allowedAmountOffSurface ||
+                    Math.Cos(shipRot) <= allowedRotationCosine)
                 {
                     InitShip();
                     return;
