@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace RCKTD
 {
@@ -18,6 +19,8 @@ namespace RCKTD
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private List<Rectangle> surfaces = new List<Rectangle>();
+
         private Rectangle ScreenSize => _graphics.GraphicsDevice.Viewport.Bounds;
 
         private Rectangle ShipBounds => new Rectangle(shipPos.ToPoint(), new Point(shipTexture.Width, shipTexture.Height));
@@ -32,6 +35,8 @@ namespace RCKTD
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            surfaces.Add(new Rectangle(0, ScreenSize.Height - 10, ScreenSize.Width, 10));
 
             InitShip();
 
@@ -73,6 +78,8 @@ namespace RCKTD
             shipVel.Y += gravity;
             shipPos += shipVel;
 
+
+
             base.Update(gameTime);
         }
 
@@ -85,7 +92,10 @@ namespace RCKTD
 
             _spriteBatch.Draw(shipTexture, shipPos, Color.White);
 
-            _spriteBatch.Draw(wallTexture, new Rectangle(0, ScreenSize.Height - 10, ScreenSize.Width, 10), Color.White);
+            foreach (var sur in surfaces)
+            {
+                _spriteBatch.Draw(wallTexture, sur, Color.White);
+            }
 
             _spriteBatch.End();
 
