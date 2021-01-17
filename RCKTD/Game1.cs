@@ -88,14 +88,15 @@ namespace RCKTD
             {
                 shipAcc += new Vector2((float)Math.Sin(shipRot), -(float)Math.Cos(shipRot)) * thrust;
             }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 shipRot -= rotation;
+                shipAcc += new Vector2((float)Math.Sin(shipRot), -(float)Math.Cos(shipRot)) * thrust * 0.8f;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 shipRot += rotation;
+                shipAcc += new Vector2((float)Math.Sin(shipRot), -(float)Math.Cos(shipRot)) * thrust * 0.8f;
             }
 
             shipVel += shipAcc;
