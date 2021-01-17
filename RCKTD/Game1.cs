@@ -11,9 +11,11 @@ namespace RCKTD
 
         private const float gravity = 0.1f;
         private const float thrust = 0.2f;
+        private const float rotation = 0.01f;
 
         private Vector2 shipPos;
         private Vector2 shipVel;
+        private float shipRot;
 
         private Texture2D shipTexture;
         private Texture2D wallTexture;
@@ -49,6 +51,7 @@ namespace RCKTD
         {
             shipPos = new Vector2(ScreenSize.Width / 3, ScreenSize.Height / 2);
             shipVel = Vector2.Zero;
+            shipRot = 0;
         }
 
         // TODO: use this.Content to load your game content here
@@ -84,6 +87,15 @@ namespace RCKTD
                 shipAcc.Y -= thrust;
             }
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                shipRot -= rotation;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                shipRot += rotation;
+            }
+
             shipVel += shipAcc;
             shipPos += shipVel;
 
@@ -106,7 +118,19 @@ namespace RCKTD
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(shipTexture, shipPos, Color.White);
+            var shipCenter = new Vector2(shipTexture.Width / 2, shipTexture.Height / 2);
+
+            _spriteBatch.Draw(
+                shipTexture,
+                shipPos + shipCenter,
+                null,
+                Color.White,
+                shipRot,
+                shipCenter,
+                Vector2.One,
+                SpriteEffects.None,
+                0f
+            );
 
             foreach (var sur in surfaces)
             {
