@@ -84,7 +84,7 @@ namespace RCKTD
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                shipAcc.Y -= thrust;
+                shipAcc += new Vector2((float)Math.Sin(shipRot), -(float)Math.Cos(shipRot)) * thrust;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
