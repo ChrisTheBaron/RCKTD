@@ -8,6 +8,7 @@ namespace RCKTD
     {
 
         private Texture2D shipTexture;
+        private Texture2D wallTexture;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -33,6 +34,9 @@ namespace RCKTD
 
             shipTexture = Content.Load<Texture2D>("ship");
 
+            wallTexture = new Texture2D(GraphicsDevice, 1, 1);
+            wallTexture.SetData(new Color[] { Color.Green });
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -53,6 +57,8 @@ namespace RCKTD
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(shipTexture, Vector2.Zero, Color.White);
+
+            _spriteBatch.Draw(wallTexture, new Rectangle(0, _graphics.GraphicsDevice.Viewport.Height - 10, _graphics.GraphicsDevice.Viewport.Width, 10), Color.White);
 
             _spriteBatch.End();
 
