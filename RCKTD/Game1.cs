@@ -9,6 +9,8 @@ namespace RCKTD
     public class Game1 : Game
     {
 
+        public ScreenManager ScreenManager { get; private set; }
+
         public InputManager InputManager { get; private set; }
 
         private GameScreen gameScreen;
@@ -35,7 +37,11 @@ namespace RCKTD
             gameScreen = new GameScreen();
             gameScreen.ProcessShow(new Dictionary<string, object>());
 
-            InputManager.ControlPressed += gameScreen.ControlPressed;
+            ScreenManager = new ScreenManager(new List<Screen> {
+                gameScreen
+            }, typeof(GameScreen));
+
+            InputManager.ControlPressed += ScreenManager.ControlPressed;
 
             base.Initialize();
         }
@@ -59,7 +65,7 @@ namespace RCKTD
         protected override void Update(GameTime gameTime)
         {
             InputManager.Update(gameTime);
-            gameScreen.Update(gameTime);
+            ScreenManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -70,7 +76,7 @@ namespace RCKTD
 
             _spriteBatch.Begin();
 
-            gameScreen.Draw(gameTime, _spriteBatch);
+            ScreenManager.Draw(gameTime, _spriteBatch);
 
             _spriteBatch.End();
 
